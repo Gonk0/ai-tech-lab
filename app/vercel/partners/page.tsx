@@ -4,6 +4,7 @@ import { AdminApplicationsPanel } from "@/components/admin/AdminApplicationsPane
 import { adminSetupRequired, getSession } from "@/lib/admin/auth";
 import { ADMIN_BASE_PATH } from "@/lib/admin/constants";
 import { getDb } from "@/lib/db";
+import { ensureSchema } from "@/lib/db/ensure-schema";
 import { partnerApplications } from "@/lib/db/schema";
 
 export const dynamic = "force-dynamic";
@@ -19,10 +20,12 @@ export default async function VercelPartnersPage() {
     redirect(`${ADMIN_BASE_PATH}/login`);
   }
 
-  const applications = await getDb()
+  const applications = await ensureSchema().then(() =>
+    getDb()
     .select()
     .from(partnerApplications)
-    .orderBy(desc(partnerApplications.createdAt));
+    .orderBy(desc(partnerApplications.createdAt)),
+  );
 
   return (
     <main className="px-6 py-28 md:px-12 lg:px-20">

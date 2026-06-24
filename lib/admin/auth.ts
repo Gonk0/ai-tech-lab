@@ -9,6 +9,7 @@ import {
   verifySessionToken,
 } from "./session";
 import { getDb } from "@/lib/db";
+import { ensureSchema } from "@/lib/db/ensure-schema";
 import { adminUsers } from "@/lib/db/schema";
 
 export async function hashPassword(password: string): Promise<string> {
@@ -56,11 +57,13 @@ export async function getSession() {
 }
 
 export async function adminSetupRequired(): Promise<boolean> {
+  await ensureSchema();
   const users = await getDb().select({ id: adminUsers.id }).from(adminUsers).limit(1);
   return users.length === 0;
 }
 
 export async function createInitialAdmin(password: string): Promise<void> {
+  await ensureSchema();
   const required = await adminSetupRequired();
 
   if (!required) {
@@ -76,6 +79,7 @@ export async function createInitialAdmin(password: string): Promise<void> {
 }
 
 export async function authenticateAdmin(password: string): Promise<boolean> {
+  await ensureSchema();
   const [user] = await getDb()
     .select()
     .from(adminUsers)

@@ -1,4 +1,5 @@
-import { createClient, type Client } from "@libsql/client";
+import { createClient as createLocalClient, type Client } from "@libsql/client";
+import { createClient as createRemoteClient } from "@libsql/client/web";
 import { drizzle, type LibSQLDatabase } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 
@@ -20,11 +21,19 @@ function resolveDatabaseUrl(): string {
   return "file:./data/partners.db";
 }
 
+function isRemoteDatabase(url: string): boolean {
+  return url.startsWith("libsql:") || url.startsWith("https:") || url.startsWith("http:");
+}
+
 function createDbClient(): Client {
   const url = resolveDatabaseUrl();
   const authToken = process.env.TURSO_AUTH_TOKEN ?? process.env.LIBSQL_AUTH_TOKEN;
 
-  return createClient(authToken ? { url, authToken } : { url });
+  if (isRemoteDatabase(url)) {
+    return createRemoteClient(authToken ? { url, authToken } : { url });
+  }
+
+  return createLocalClient({ url });
 }
 
 export function getDb(): Db {

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminSession } from "@/lib/admin/auth";
 import { getDb } from "@/lib/db";
+import { ensureSchema } from "@/lib/db/ensure-schema";
 import { partnerApplications } from "@/lib/db/schema";
 
 const updateSchema = z.object({
@@ -38,6 +39,8 @@ export async function PATCH(
       { status: 400 },
     );
   }
+
+  await ensureSchema();
 
   const result = await getDb()
     .update(partnerApplications)

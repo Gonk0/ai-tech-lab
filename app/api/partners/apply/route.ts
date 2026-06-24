@@ -1,5 +1,6 @@
 import { partnerApplications } from "@/lib/db/schema";
 import { getDb } from "@/lib/db";
+import { ensureSchema } from "@/lib/db/ensure-schema";
 import {
   formatZodErrors,
   partnerApplicationSchema,
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
   const createdAt = new Date().toISOString();
 
   try {
+    await ensureSchema();
     await getDb().insert(partnerApplications).values({
       id,
       createdAt,

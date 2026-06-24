@@ -57,6 +57,27 @@ export function FluidOrbs() {
       downAt: 0,
       charge: 0,
     };
+    const mobileQuery = window.matchMedia("(hover: none) and (pointer: coarse)");
+    let isAmbientMode = mobileQuery.matches;
+
+    const updateAmbientMode = () => {
+      isAmbientMode = mobileQuery.matches;
+      if (isAmbientMode) {
+        mouse.active = false;
+        mouse.down = false;
+        mouse.x = -9999;
+        mouse.y = -9999;
+        mouse.charge = 0;
+      }
+    };
+
+    const applyAmbientPointer = () => {
+      mouse.x = width * 0.5 + Math.sin(frame * 0.007) * width * 0.26;
+      mouse.y = height * 0.5 + Math.cos(frame * 0.0055) * height * 0.2;
+      mouse.active = true;
+      mouse.down = false;
+      mouse.charge = 0.12 + Math.sin(frame * 0.012) * 0.08;
+    };
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -136,6 +157,14 @@ export function FluidOrbs() {
 
     const draw = (now: number) => {
       frame += 1;
+
+      if (isAmbientMode) {
+        applyAmbientPointer();
+        if (frame % 320 === 0) {
+          waves.push({ x: mouse.x, y: mouse.y, radius: 8, alpha: 0.16, force: 0.45 });
+        }
+      }
+
       ctx.fillStyle = "#03030a";
       ctx.fillRect(0, 0, width, height);
 
@@ -150,7 +179,7 @@ export function FluidOrbs() {
 
       if (mouse.down) {
         mouse.charge = Math.min(1, (performance.now() - mouse.downAt) / 1200);
-      } else {
+      } else if (!isAmbientMode) {
         mouse.charge *= 0.9;
       }
 
@@ -162,10 +191,12 @@ export function FluidOrbs() {
         const fieldRadius = mouse.down ? 520 : 280;
 
         if (mouse.active && distance < fieldRadius) {
-          const force = (1 - distance / fieldRadius) * (mouse.down ? -0.075 : 0.052);
+          const interaction = isAmbientMode ? 0.28 : 1;
+          const force =
+            (1 - distance / fieldRadius) * (mouse.down ? -0.075 : 0.052) * interaction;
           node.vx += (dx / distance) * force;
           node.vy += (dy / distance) * force;
-          node.pulse += 0.05;
+          node.pulse += 0.05 * interaction;
         }
 
         for (const wave of waves) {
@@ -282,7 +313,7 @@ export function FluidOrbs() {
         charge: Math.round(mouse.charge * 100),
         pulses: telemetryRef.current.pulses,
         links: linkCount,
-        mode: mouse.down ? "CHARGE" : mouse.active ? "BEND" : "IDLE",
+        mode: mouse.down ? "CHARGE" : isAmbientMode ? "FLOW" : mouse.active ? "BEND" : "IDLE",
       };
 
       if (now - lastTelemetrySync > 180) {
@@ -294,12 +325,14 @@ export function FluidOrbs() {
     };
 
     const onPointerMove = (event: PointerEvent) => {
+      if (isAmbientMode || event.pointerType === "touch") return;
       mouse.x = event.clientX;
       mouse.y = event.clientY;
       mouse.active = true;
     };
 
     const onPointerDown = (event: PointerEvent) => {
+      if (isAmbientMode || event.pointerType === "touch") return;
       mouse.x = event.clientX;
       mouse.y = event.clientY;
       mouse.active = true;
@@ -308,6 +341,7 @@ export function FluidOrbs() {
     };
 
     const onPointerUp = (event: PointerEvent) => {
+      if (isAmbientMode || event.pointerType === "touch") return;
       if (!mouse.down) return;
 
       const charge = Math.min(1, (performance.now() - mouse.downAt) / 1200);
@@ -320,12 +354,14 @@ export function FluidOrbs() {
     };
 
     const onPointerLeave = () => {
+      if (isAmbientMode) return;
       mouse.active = false;
       mouse.down = false;
       mouse.x = -9999;
       mouse.y = -9999;
     };
 
+    updateAmbientMode();
     resize();
     animationFrame = requestAnimationFrame(draw);
 
@@ -334,6 +370,7 @@ export function FluidOrbs() {
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("pointerleave", onPointerLeave);
+    mobileQuery.addEventListener("change", updateAmbientMode);
 
     return () => {
       cancelAnimationFrame(animationFrame);
@@ -342,6 +379,7 @@ export function FluidOrbs() {
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointerleave", onPointerLeave);
+      mobileQuery.removeEventListener("change", updateAmbientMode);
     };
   }, []);
 

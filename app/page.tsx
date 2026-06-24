@@ -15,6 +15,7 @@ const TICKER_ITEMS = [
   "SLOVAKIA / 2026 H2",
   "NEXT-GENERATION SOFTWARE",
   "RESEARCH TO PRODUCTION",
+  "NONPROFIT WEB PARTNERSHIPS",
 ];
 
 const CAPABILITIES = [
@@ -57,6 +58,7 @@ export default function Home() {
       <ProjectSection />
       <CapabilitiesSection />
       <OperatingModelSection />
+      <NonprofitPartnersSection />
       <CTASection />
     </main>
   );
@@ -362,6 +364,88 @@ function OperatingModelSection() {
   );
 }
 
+function NonprofitPartnersSection() {
+  const pillars = [
+    {
+      title: "Free to build",
+      desc: "For now, we create nonprofit websites at no charge — design, development and launch included.",
+    },
+    {
+      title: "Earned selection",
+      desc: "We partner with organizations whose track record speaks for itself. Past impact matters more than a pitch deck.",
+    },
+    {
+      title: "Long-term care",
+      desc: "Support does not end at launch. We stay on as stewards — updates, fixes and day-to-day management included.",
+    },
+  ];
+
+  return (
+    <section className="border-t border-white/[0.06] px-6 py-24 md:px-12 lg:px-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-12 md:grid-cols-[0.92fr_1.08fr] md:items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, ease: easeOut }}
+          >
+            <span className="text-[10px] uppercase tracking-[0.32em] text-white/18">04 /</span>
+            <h2 className="mt-3 max-w-md text-4xl font-black leading-[0.96] tracking-[-0.035em] text-white md:text-5xl">
+              Websites for nonprofits. Free, for now.
+            </h2>
+            <p className="mt-6 text-base leading-[1.78] text-white/38">
+              A limited partnership program for mission-driven organizations that have already
+              proven their commitment through action — not promises.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.85, delay: 0.08, ease: easeOut }}
+            className="grid gap-px bg-white/[0.055]"
+          >
+            {pillars.map((pillar, index) => (
+              <div
+                key={pillar.title}
+                className="bg-[#03030a]/90 p-7 transition-colors duration-300 hover:bg-white/[0.025] md:p-8"
+              >
+                <span className="text-[10px] uppercase tracking-[0.28em] text-white/14">
+                  0{index + 1}
+                </span>
+                <h3 className="mb-2 mt-3 text-lg font-semibold text-white">{pillar.title}</h3>
+                <p className="text-sm leading-[1.72] text-white/40">{pillar.desc}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.12, ease: easeOut }}
+          className="mt-10 flex flex-col items-start justify-between gap-6 rounded-3xl border border-white/[0.075] bg-white/[0.028] p-7 md:flex-row md:items-center md:p-9"
+        >
+          <p className="max-w-2xl text-sm leading-[1.78] text-white/44 md:text-base">
+            We choose a small number of partners each cycle. If your organization has a record of
+            real work in the community, we would like to hear from you.
+          </p>
+          <Link
+            href="/partners/apply"
+            className="group inline-flex flex-shrink-0 items-center gap-2 border border-white/12 px-6 py-3 text-sm text-white/58 transition-all duration-300 hover:border-white/28 hover:text-white"
+          >
+            Apply as a partner
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 function CTASection() {
   return (
     <section className="border-t border-white/[0.06] px-6 py-24 md:px-12 lg:px-20">
@@ -373,7 +457,7 @@ function CTASection() {
         className="mx-auto max-w-5xl text-center"
       >
         <p className="mb-6 text-[10px] uppercase tracking-[0.32em] text-white/22">
-          Enterprise AI / Public demos / Product systems
+          Enterprise AI / Nonprofit partnerships / Product systems
         </p>
         <h2 className="mb-10 text-[clamp(2.5rem,6.2vw,6.8rem)] font-black leading-[0.92] tracking-[-0.045em] text-white">
           From prototype to operational reality.

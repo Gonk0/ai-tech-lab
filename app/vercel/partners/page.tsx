@@ -3,8 +3,10 @@ import { redirect } from "next/navigation";
 import { AdminApplicationsPanel } from "@/components/admin/AdminApplicationsPanel";
 import { adminSetupRequired, getSession } from "@/lib/admin/auth";
 import { ADMIN_BASE_PATH } from "@/lib/admin/constants";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { partnerApplications } from "@/lib/db/schema";
+
+export const dynamic = "force-dynamic";
 
 export default async function VercelPartnersPage() {
   if (await adminSetupRequired()) {
@@ -17,7 +19,7 @@ export default async function VercelPartnersPage() {
     redirect(`${ADMIN_BASE_PATH}/login`);
   }
 
-  const applications = await db
+  const applications = await getDb()
     .select()
     .from(partnerApplications)
     .orderBy(desc(partnerApplications.createdAt));

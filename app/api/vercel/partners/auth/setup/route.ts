@@ -13,6 +13,8 @@ const setupSchema = z
     path: ["confirmPassword"],
   });
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   let body: unknown;
 

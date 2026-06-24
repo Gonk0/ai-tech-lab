@@ -2,12 +2,14 @@ import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminSession } from "@/lib/admin/auth";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { partnerApplications } from "@/lib/db/schema";
 
 const updateSchema = z.object({
   status: z.enum(["pending", "reviewed", "accepted", "rejected"]),
 });
+
+export const dynamic = "force-dynamic";
 
 export async function PATCH(
   request: Request,
@@ -37,7 +39,7 @@ export async function PATCH(
     );
   }
 
-  const result = await db
+  const result = await getDb()
     .update(partnerApplications)
     .set({ status: parsed.data.status })
     .where(eq(partnerApplications.id, id))

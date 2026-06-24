@@ -9,15 +9,25 @@ declare global {
   var __libsqlClient: Client | undefined;
 }
 
+function resolveDatabaseUrl(): string {
+  const configured = process.env.TURSO_DATABASE_URL ?? process.env.LIBSQL_URL;
+  if (configured) return configured;
+
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return ":memory:";
+  }
+
+  return "file:./data/partners.db";
+}
+
 function createDbClient(): Client {
-  const url =
-    process.env.TURSO_DATABASE_URL ?? process.env.LIBSQL_URL ?? "file:./data/partners.db";
+  const url = resolveDatabaseUrl();
   const authToken = process.env.TURSO_AUTH_TOKEN ?? process.env.LIBSQL_AUTH_TOKEN;
 
   return createClient(authToken ? { url, authToken } : { url });
 }
 
-function getDb(): Db {
+export function getDb(): Db {
   if (!global.__partnerDb) {
     if (!global.__libsqlClient) {
       global.__libsqlClient = createDbClient();
@@ -27,5 +37,3 @@ function getDb(): Db {
 
   return global.__partnerDb;
 }
-
-export const db = getDb();

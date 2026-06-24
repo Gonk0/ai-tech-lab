@@ -1,8 +1,10 @@
 import { desc } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { requireAdminSession } from "@/lib/admin/auth";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { partnerApplications } from "@/lib/db/schema";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
@@ -11,7 +13,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const applications = await db
+  const applications = await getDb()
     .select()
     .from(partnerApplications)
     .orderBy(desc(partnerApplications.createdAt));

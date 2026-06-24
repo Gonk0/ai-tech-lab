@@ -6,6 +6,8 @@ const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   if (await adminSetupRequired()) {
     return NextResponse.json({ error: "Admin setup is required first" }, { status: 400 });

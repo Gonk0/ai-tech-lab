@@ -8,7 +8,7 @@ import {
   signSession,
   verifySessionToken,
 } from "./session";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import { adminUsers } from "@/lib/db/schema";
 
 export async function hashPassword(password: string): Promise<string> {
@@ -56,7 +56,7 @@ export async function getSession() {
 }
 
 export async function adminSetupRequired(): Promise<boolean> {
-  const users = await db.select({ id: adminUsers.id }).from(adminUsers).limit(1);
+  const users = await getDb().select({ id: adminUsers.id }).from(adminUsers).limit(1);
   return users.length === 0;
 }
 
@@ -67,7 +67,7 @@ export async function createInitialAdmin(password: string): Promise<void> {
     throw new Error("Admin account already exists");
   }
 
-  await db.insert(adminUsers).values({
+  await getDb().insert(adminUsers).values({
     id: crypto.randomUUID(),
     email: ADMIN_EMAIL,
     passwordHash: await hashPassword(password),
@@ -76,7 +76,7 @@ export async function createInitialAdmin(password: string): Promise<void> {
 }
 
 export async function authenticateAdmin(password: string): Promise<boolean> {
-  const [user] = await db
+  const [user] = await getDb()
     .select()
     .from(adminUsers)
     .where(eq(adminUsers.email, ADMIN_EMAIL))

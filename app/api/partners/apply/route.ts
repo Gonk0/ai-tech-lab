@@ -1,10 +1,12 @@
 import { partnerApplications } from "@/lib/db/schema";
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 import {
   formatZodErrors,
   partnerApplicationSchema,
 } from "@/lib/partners/validation";
 import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -29,7 +31,7 @@ export async function POST(request: Request) {
   const createdAt = new Date().toISOString();
 
   try {
-    await db.insert(partnerApplications).values({
+    await getDb().insert(partnerApplications).values({
       id,
       createdAt,
       organizationName: data.organizationName,

@@ -35,6 +35,18 @@ export function ensureSchema(): Promise<void> {
           created_at TEXT NOT NULL
         )
       `);
+
+      await db.run(sql`
+        CREATE TABLE IF NOT EXISTS contact_requests (
+          id TEXT PRIMARY KEY NOT NULL,
+          created_at TEXT NOT NULL,
+          name TEXT NOT NULL,
+          email TEXT NOT NULL,
+          phone TEXT,
+          message TEXT NOT NULL,
+          status TEXT NOT NULL DEFAULT 'pending'
+        )
+      `);
     })().catch((error) => {
       schemaReady = null;
       throw error;

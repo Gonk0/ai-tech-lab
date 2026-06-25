@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 
@@ -119,6 +120,9 @@ type Attempt = {
 };
 
 export default function LabPage() {
+  const { t } = useLanguage();
+  const l = t.lab;
+
   return (
     <main className="relative z-10 px-6 pb-28 pt-32 md:px-12 lg:px-20">
       <div className="mx-auto max-w-7xl">
@@ -128,16 +132,11 @@ export default function LabPage() {
           transition={{ duration: 0.9, ease: easeOut }}
           className="mb-14"
         >
-          <p className="mb-5 text-[10px] uppercase tracking-[0.28em] text-white/22">
-            AI Tech Lab / Logic Systems
-          </p>
+          <p className="mb-5 text-[10px] uppercase tracking-[0.28em] text-white/22">{l.eyebrow}</p>
           <h1 className="max-w-4xl text-[clamp(3rem,7vw,7.2rem)] font-black leading-[0.9] tracking-[-0.05em] text-white">
-            Lab-grade puzzle engines.
+            {l.headline}
           </h1>
-          <p className="mt-7 max-w-2xl text-base leading-[1.78] text-white/42 md:text-lg">
-            Real interactive logic games: route a quantum network, then crack an AI protocol by
-            deduction. No pointless click toys.
-          </p>
+          <p className="mt-7 max-w-2xl text-base leading-[1.78] text-white/42 md:text-lg">{l.intro}</p>
         </motion.div>
 
         <motion.div
@@ -150,15 +149,12 @@ export default function LabPage() {
             <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
               <div>
                 <p className="mb-3 text-[10px] uppercase tracking-[0.28em] text-blue-200/42">
-                  Space Lab / Pure Mode
+                  {l.spaceEyebrow}
                 </p>
                 <h2 className="text-3xl font-black tracking-[-0.035em] text-white md:text-5xl">
-                  Enter the empty universe.
+                  {l.spaceHeadline}
                 </h2>
-                <p className="mt-4 max-w-2xl text-sm leading-7 text-white/38">
-                  No interface. No text. Just stars, planets, black holes, gravity and mysterious
-                  generated audio after the first click.
-                </p>
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-white/38">{l.spaceIntro}</p>
               </div>
               <span className="text-3xl text-white transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
                 ↗

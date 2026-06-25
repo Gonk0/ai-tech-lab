@@ -4,49 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-
-const TICKER_ITEMS = [
-  "AI INFRASTRUCTURE",
-  "AUTONOMOUS SYSTEMS",
-  "EDTECH PRODUCTS",
-  "AGENTIC OPERATIONS",
-  "DATA PIPELINES",
-  "ENTERPRISE AUTOMATION",
-  "SLOVAKIA / 2026 H2",
-  "NEXT-GENERATION SOFTWARE",
-  "RESEARCH TO PRODUCTION",
-  "NONPROFIT WEB PARTNERSHIPS",
-];
-
-const CAPABILITIES = [
-  {
-    num: "01",
-    title: "AI Systems",
-    desc: "Production-grade AI workflows, retrieval systems, agent operations and decision engines built for real business pressure.",
-  },
-  {
-    num: "02",
-    title: "Digital Products",
-    desc: "SaaS platforms and public-facing products with strong identity, clean execution and a clear path to scale.",
-  },
-  {
-    num: "03",
-    title: "Automation Layer",
-    desc: "Internal tools that collapse repetitive work, connect systems and turn operational chaos into structured flow.",
-  },
-  {
-    num: "04",
-    title: "Data Infrastructure",
-    desc: "Pipelines, dashboards, integrations and monitoring designed to make organizations faster and more intelligent.",
-  },
-];
-
-const SIGNALS = [
-  { label: "Live product", value: "01" },
-  { label: "AI modules", value: "12+" },
-  { label: "Market", value: "SK/EU" },
-  { label: "Horizon", value: "3000" },
-];
+import { useLanguage } from "@/components/LanguageProvider";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 
@@ -65,6 +23,14 @@ export default function Home() {
 }
 
 function HeroSection() {
+  const { t } = useLanguage();
+  const h = t.home;
+  const signals = [
+    { label: h.signals.liveProduct, value: "01" },
+    { label: h.signals.aiModules, value: "12+" },
+    { label: h.signals.market, value: "SK/EU" },
+    { label: h.signals.horizon, value: "3000" },
+  ];
   const containerRef = useRef<HTMLDivElement>(null);
   const rawX = useMotionValue(0.5);
   const rawY = useMotionValue(0.5);
@@ -102,7 +68,7 @@ function HeroSection() {
             transition={{ delay: 0.18, duration: 0.8 }}
             className="mb-7 text-[10px] uppercase tracking-[0.32em] text-white/28"
           >
-            AI Tech Lab / Corporate Intelligence Systems / 2026 H2
+            {h.heroEyebrow}
           </motion.p>
 
           <motion.div style={{ x: headlineX, y: headlineY }}>
@@ -112,7 +78,7 @@ function HeroSection() {
               transition={{ delay: 0.32, duration: 0.95, ease: easeOut }}
               className="max-w-4xl text-[clamp(3rem,7.4vw,8.6rem)] font-black leading-[0.9] tracking-[-0.055em] text-white"
             >
-              We build intelligent infrastructure.
+              {h.heroTitle}
             </motion.h1>
           </motion.div>
 
@@ -122,8 +88,7 @@ function HeroSection() {
             transition={{ delay: 0.58, duration: 0.85, ease: easeOut }}
             className="mt-8 max-w-2xl text-base leading-[1.82] text-white/48 md:text-lg"
           >
-            A future-facing AI lab creating enterprise-grade systems, public digital products and
-            automation layers for organizations that want to move faster than the market.
+            {h.heroBody}
           </motion.p>
 
           <motion.div
@@ -136,14 +101,14 @@ function HeroSection() {
               href="/projects"
               className="group inline-flex items-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-white/90"
             >
-              View projects
+              {h.viewProjects}
               <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </Link>
             <Link
               href="/lab"
               className="inline-flex items-center gap-2 border border-white/12 px-6 py-3 text-sm text-white/58 transition-all duration-300 hover:border-white/28 hover:text-white"
             >
-              Explore lab
+              {h.exploreLab}
             </Link>
           </motion.div>
         </div>
@@ -158,15 +123,15 @@ function HeroSection() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_10%,rgba(90,130,255,0.22),transparent_44%)]" />
           <div className="relative">
             <div className="mb-8 flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-[0.28em] text-white/30">Live field</span>
+              <span className="text-[10px] uppercase tracking-[0.28em] text-white/30">{h.liveField}</span>
               <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-emerald-300/80">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 pulse-dot" />
-                Online
+                {h.online}
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-px bg-white/[0.065]">
-              {SIGNALS.map((signal) => (
+              {signals.map((signal) => (
                 <div key={signal.label} className="bg-[#050512]/82 p-5">
                   <div className="mb-2 text-2xl font-semibold text-white">{signal.value}</div>
                   <div className="text-[10px] uppercase tracking-[0.18em] text-white/28">
@@ -176,10 +141,7 @@ function HeroSection() {
               ))}
             </div>
 
-            <p className="mt-6 text-sm leading-7 text-white/38">
-              The background is interactive. Move the cursor to bend the field. Hold anywhere to
-              charge gravity. Release to send a pulse through the network.
-            </p>
+            <p className="mt-6 text-sm leading-7 text-white/38">{h.panelHint}</p>
           </div>
         </motion.div>
       </div>
@@ -188,7 +150,8 @@ function HeroSection() {
 }
 
 function Ticker() {
-  const doubled = [...TICKER_ITEMS, ...TICKER_ITEMS];
+  const { t } = useLanguage();
+  const doubled = [...t.home.ticker, ...t.home.ticker];
 
   return (
     <div className="overflow-hidden border-y border-white/[0.065] bg-white/[0.018]">
@@ -211,10 +174,13 @@ function Ticker() {
 }
 
 function ProjectSection() {
+  const { t } = useLanguage();
+  const h = t.home;
+
   return (
     <section className="px-6 py-28 md:px-12 lg:px-20">
       <div className="mx-auto max-w-7xl">
-        <SectionHeader index="01" title="Flagship deployment" href="/projects" linkLabel="All projects" />
+        <SectionHeader index="01" title={h.flagship} href="/projects" linkLabel={h.allProjects} />
 
         <motion.a
           href="https://www.vodicak.pro"
@@ -248,7 +214,7 @@ function ProjectSection() {
             </div>
             <div className="absolute right-5 top-5 flex items-center gap-2 border border-emerald-400/28 bg-emerald-400/[0.09] px-3 py-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 pulse-dot" />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-emerald-300">Live</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-emerald-300">{h.live}</span>
             </div>
           </div>
 
@@ -268,12 +234,11 @@ function ProjectSection() {
                 vodicak.pro
               </h3>
               <p className="max-w-2xl text-sm leading-[1.78] text-white/44 md:text-base">
-                A live digital platform for driving schools and future drivers. Online tests,
-                education workflows and product infrastructure for a modern learning category.
+                {h.vodicakDesc}
               </p>
             </div>
             <span className="inline-flex flex-shrink-0 items-center gap-2 text-sm text-white transition-all duration-300 group-hover:gap-3">
-              Visit product <span className="text-xl">↗</span>
+              {h.visitProduct} <span className="text-xl">↗</span>
             </span>
           </div>
         </motion.a>
@@ -283,13 +248,22 @@ function ProjectSection() {
 }
 
 function CapabilitiesSection() {
+  const { t } = useLanguage();
+  const h = t.home;
+  const capabilities = [
+    { num: "01", title: h.cap1Title, desc: h.cap1Desc },
+    { num: "02", title: h.cap2Title, desc: h.cap2Desc },
+    { num: "03", title: h.cap3Title, desc: h.cap3Desc },
+    { num: "04", title: h.cap4Title, desc: h.cap4Desc },
+  ];
+
   return (
     <section className="border-t border-white/[0.06] px-6 py-24 md:px-12 lg:px-20">
       <div className="mx-auto max-w-7xl">
-        <SectionHeader index="02" title="What we build" />
+        <SectionHeader index="02" title={h.capabilities} />
 
         <div className="grid grid-cols-1 gap-px bg-white/[0.055] md:grid-cols-2">
-          {CAPABILITIES.map((capability, index) => (
+          {capabilities.map((capability, index) => (
             <motion.div
               key={capability.num}
               initial={{ opacity: 0 }}
@@ -314,6 +288,9 @@ function CapabilitiesSection() {
 }
 
 function OperatingModelSection() {
+  const { t } = useLanguage();
+  const h = t.home;
+
   return (
     <section className="border-t border-white/[0.06] px-6 py-24 md:px-12 lg:px-20">
       <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[0.78fr_1.22fr] md:items-start">
@@ -325,7 +302,7 @@ function OperatingModelSection() {
         >
           <span className="text-[10px] uppercase tracking-[0.32em] text-white/18">03 /</span>
           <h2 className="mt-3 max-w-sm text-4xl font-black leading-[0.96] tracking-[-0.035em] text-white md:text-5xl">
-            Built like a lab. Operated like a company.
+            {h.operatingTitle}
           </h2>
         </motion.div>
 
@@ -335,20 +312,14 @@ function OperatingModelSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.85, delay: 0.08, ease: easeOut }}
         >
-          <p className="mb-7 text-lg leading-[1.78] text-white/52">
-            We combine research velocity with product discipline. Every experiment is pointed
-            toward a system that can be shipped, measured and scaled.
-          </p>
-          <p className="text-base leading-[1.78] text-white/34">
-            The lab is designed for public products, internal automation and conference-grade
-            demonstrations that make advanced AI feel tangible instead of theoretical.
-          </p>
+          <p className="mb-7 text-lg leading-[1.78] text-white/52">{h.operatingBody1}</p>
+          <p className="text-base leading-[1.78] text-white/34">{h.operatingBody2}</p>
 
           <div className="mt-9 grid grid-cols-3 gap-5 border-t border-white/[0.06] pt-8">
             {[
-              { value: "Live", label: "production first" },
-              { value: "AI", label: "native stack" },
-              { value: "EU", label: "market focus" },
+              { value: h.opLive, label: h.opLiveLabel },
+              { value: h.opAi, label: h.opAiLabel },
+              { value: h.opEu, label: h.opEuLabel },
             ].map((item) => (
               <div key={item.label}>
                 <div className="mb-1 text-2xl font-semibold text-white">{item.value}</div>
@@ -365,19 +336,12 @@ function OperatingModelSection() {
 }
 
 function NonprofitPartnersSection() {
+  const { t } = useLanguage();
+  const h = t.home;
   const pillars = [
-    {
-      title: "Free to build",
-      desc: "For now, we create nonprofit websites at no charge — design, development and launch included.",
-    },
-    {
-      title: "Earned selection",
-      desc: "We partner with organizations whose track record speaks for itself. Past impact matters more than a pitch deck.",
-    },
-    {
-      title: "Long-term care",
-      desc: "Support does not end at launch. We stay on as stewards — updates, fixes and day-to-day management included.",
-    },
+    { title: h.np1Title, desc: h.np1Desc },
+    { title: h.np2Title, desc: h.np2Desc },
+    { title: h.np3Title, desc: h.np3Desc },
   ];
 
   return (
@@ -392,12 +356,9 @@ function NonprofitPartnersSection() {
           >
             <span className="text-[10px] uppercase tracking-[0.32em] text-white/18">04 /</span>
             <h2 className="mt-3 max-w-md text-4xl font-black leading-[0.96] tracking-[-0.035em] text-white md:text-5xl">
-              Websites for nonprofits. Free, for now.
+              {h.nonprofitTitle}
             </h2>
-            <p className="mt-6 text-base leading-[1.78] text-white/38">
-              A limited partnership program for mission-driven organizations that have already
-              proven their commitment through action — not promises.
-            </p>
+            <p className="mt-6 text-base leading-[1.78] text-white/38">{h.nonprofitIntro}</p>
           </motion.div>
 
           <motion.div
@@ -429,15 +390,12 @@ function NonprofitPartnersSection() {
           transition={{ duration: 0.8, delay: 0.12, ease: easeOut }}
           className="mt-10 flex flex-col items-start justify-between gap-6 rounded-3xl border border-white/[0.075] bg-white/[0.028] p-7 md:flex-row md:items-center md:p-9"
         >
-          <p className="max-w-2xl text-sm leading-[1.78] text-white/44 md:text-base">
-            We choose a small number of partners each cycle. If your organization has a record of
-            real work in the community, we would like to hear from you.
-          </p>
+          <p className="max-w-2xl text-sm leading-[1.78] text-white/44 md:text-base">{h.nonprofitCta}</p>
           <Link
             href="/partners/apply"
             className="group inline-flex flex-shrink-0 items-center gap-2 border border-white/12 px-6 py-3 text-sm text-white/58 transition-all duration-300 hover:border-white/28 hover:text-white"
           >
-            Apply as a partner
+            {h.applyPartner}
             <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
         </motion.div>
@@ -447,6 +405,9 @@ function NonprofitPartnersSection() {
 }
 
 function CTASection() {
+  const { t } = useLanguage();
+  const h = t.home;
+
   return (
     <section className="border-t border-white/[0.06] px-6 py-24 md:px-12 lg:px-20">
       <motion.div
@@ -456,25 +417,23 @@ function CTASection() {
         transition={{ duration: 0.9, ease: easeOut }}
         className="mx-auto max-w-5xl text-center"
       >
-        <p className="mb-6 text-[10px] uppercase tracking-[0.32em] text-white/22">
-          Enterprise AI / Nonprofit partnerships / Product systems
-        </p>
+        <p className="mb-6 text-[10px] uppercase tracking-[0.32em] text-white/22">{h.ctaEyebrow}</p>
         <h2 className="mb-10 text-[clamp(2.5rem,6.2vw,6.8rem)] font-black leading-[0.92] tracking-[-0.045em] text-white">
-          From prototype to operational reality.
+          {h.ctaTitle}
         </h2>
         <div className="flex flex-wrap justify-center gap-3">
-          <a
-            href="mailto:contact@aitechlab.sk"
+          <Link
+            href="/contact"
             className="group inline-flex items-center gap-2 bg-white px-7 py-4 text-sm font-semibold text-black transition-colors hover:bg-white/90"
           >
-            Start a conversation
+            {h.ctaContact}
             <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </a>
+          </Link>
           <Link
             href="/projects"
             className="inline-flex items-center gap-2 border border-white/11 px-7 py-4 text-sm text-white/55 transition-all duration-300 hover:border-white/26 hover:text-white"
           >
-            See active systems
+            {h.ctaProjects}
           </Link>
         </div>
       </motion.div>

@@ -3,12 +3,15 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "@/components/LanguageProvider";
+import { useMemo } from "react";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
 
 type Project = {
   name: string;
   status: string;
+  statusKey: "statusLive" | "statusLiveDemo" | "statusConcept";
   target: string;
   description: string;
   tags: string[];
@@ -23,75 +26,81 @@ type ProjectGroup = {
   projects: Project[];
 };
 
-const PROJECT_GROUPS: ProjectGroup[] = [
-  {
-    id: "live",
-    title: "Live / Live demo",
-    description: "Systems already running in production or available as interactive public demos.",
-    projects: [
-      {
-        name: "vodicak.pro",
-        url: "https://www.vodicak.pro",
-        status: "Live",
-        target: "Driving schools and future drivers · Slovakia",
-        description:
-          "A live EdTech platform for online tests, learning workflows and digital infrastructure for Slovak driving schools.",
-        tags: ["EdTech", "SaaS", "B2C", "Production"],
-        logo: "/logos/vodicak-pro-transparent.png",
-      },
-      {
-        name: "Space Lab",
-        url: "/lab/space",
-        status: "Live demo",
-        target: "Conference demos and interactive brand experience",
-        description:
-          "A 3D-ish universe sandbox with planets, stars, gravity, black holes, orbital systems, weapons and generative ambient audio.",
-        tags: ["Interactive", "Canvas", "Physics", "Demo"],
-      },
-    ],
-  },
-  {
-    id: "concepts",
-    title: "Concepts",
-    description: "Products and systems in research, pipeline or early design — not yet live.",
-    projects: [
-      {
-        name: "AI Workspace",
-        status: "Concept",
-        target: "SMBs and expert teams · EU",
-        description:
-          "A corporate AI operating layer for internal knowledge, process automation and agent-assisted work.",
-        tags: ["B2B", "Agents", "Knowledge"],
-      },
-      {
-        name: "Data Pipeline OS",
-        status: "Concept",
-        target: "Data-heavy operators · EU",
-        description:
-          "A visual system for ingesting, transforming and monitoring business data flows in real time.",
-        tags: ["Data", "Ops", "Monitoring"],
-      },
-      {
-        name: "Neural CMS",
-        status: "Concept",
-        target: "Media and creators · Global",
-        description:
-          "An AI-native publishing layer where content planning, enrichment and distribution live together.",
-        tags: ["Content", "AI", "Platform"],
-      },
-      {
-        name: "Agent Demo Kit",
-        status: "Concept",
-        target: "AI events and enterprise demos · Global",
-        description:
-          "Interactive visual demos that explain how agentic software routes tasks, calls tools and verifies outputs.",
-        tags: ["Demos", "Agents", "Education"],
-      },
-    ],
-  },
-];
-
 export default function ProjectsPage() {
+  const { t } = useLanguage();
+  const p = t.projects;
+
+  const groups: ProjectGroup[] = useMemo(
+    () => [
+      {
+        id: "live",
+        title: p.liveTitle,
+        description: p.liveDesc,
+        projects: [
+          {
+            name: "vodicak.pro",
+            url: "https://www.vodicak.pro",
+            status: p.statusLive,
+            statusKey: "statusLive",
+            target: p.vodicakTarget,
+            description: p.vodicakDesc,
+            tags: ["EdTech", "SaaS", "B2C", "Production"],
+            logo: "/logos/vodicak-pro-transparent.png",
+          },
+          {
+            name: "Space Lab",
+            url: "/lab/space",
+            status: p.statusLiveDemo,
+            statusKey: "statusLiveDemo",
+            target: p.spaceTarget,
+            description: p.spaceDesc,
+            tags: ["Interactive", "Canvas", "Physics", "Demo"],
+          },
+        ],
+      },
+      {
+        id: "concepts",
+        title: p.conceptsTitle,
+        description: p.conceptsDesc,
+        projects: [
+          {
+            name: "AI Workspace",
+            status: p.statusConcept,
+            statusKey: "statusConcept",
+            target: p.aiWorkspaceTarget,
+            description: p.aiWorkspaceDesc,
+            tags: ["B2B", "Agents", "Knowledge"],
+          },
+          {
+            name: "Data Pipeline OS",
+            status: p.statusConcept,
+            statusKey: "statusConcept",
+            target: p.dataPipelineTarget,
+            description: p.dataPipelineDesc,
+            tags: ["Data", "Ops", "Monitoring"],
+          },
+          {
+            name: "Neural CMS",
+            status: p.statusConcept,
+            statusKey: "statusConcept",
+            target: p.neuralCmsTarget,
+            description: p.neuralCmsDesc,
+            tags: ["Content", "AI", "Platform"],
+          },
+          {
+            name: "Agent Demo Kit",
+            status: p.statusConcept,
+            statusKey: "statusConcept",
+            target: p.agentKitTarget,
+            description: p.agentKitDesc,
+            tags: ["Demos", "Agents", "Education"],
+          },
+        ],
+      },
+    ],
+    [p],
+  );
+
   return (
     <main className="relative z-10 px-6 pb-28 pt-32 md:px-12 lg:px-20">
       <div className="mx-auto max-w-7xl">
@@ -102,18 +111,18 @@ export default function ProjectsPage() {
           className="mb-16"
         >
           <p className="mb-5 text-[10px] uppercase tracking-[0.28em] text-white/22">
-            AI Tech Lab / Projects
+            AI Tech Lab / {p.title}
           </p>
           <h1 className="max-w-4xl text-[clamp(3rem,7.2vw,7.6rem)] font-black leading-[0.9] tracking-[-0.05em] text-white">
-            Live systems and concepts.
+            {p.pageHeadline}
           </h1>
           <p className="mt-7 max-w-2xl text-base leading-[1.78] text-white/42 md:text-lg">
-            What is already running or playable today, and what is still being designed in the lab.
+            {p.pageIntro}
           </p>
         </motion.div>
 
         <div className="space-y-16">
-          {PROJECT_GROUPS.map((group, groupIndex) => (
+          {groups.map((group, groupIndex) => (
             <motion.section
               key={group.id}
               initial={{ opacity: 0, y: 24 }}
@@ -150,7 +159,7 @@ export default function ProjectsPage() {
 }
 
 function ProjectCard({ project }: { project: Project }) {
-  const isLive = project.status === "Live" || project.status === "Live demo";
+  const isLive = project.statusKey === "statusLive" || project.statusKey === "statusLiveDemo";
   const isInternal = project.url?.startsWith("/");
   const cardContent = (
     <>

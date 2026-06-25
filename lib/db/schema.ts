@@ -26,6 +26,19 @@ export const adminUsers = sqliteTable("admin_users", {
   createdAt: text("created_at").notNull(),
 });
 
+export const contactRequests = sqliteTable("contact_requests", {
+  id: text("id").primaryKey(),
+  createdAt: text("created_at").notNull(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  message: text("message").notNull(),
+  status: text("status", { enum: ["pending", "reviewed", "closed"] })
+    .notNull()
+    .default("pending"),
+});
+
 export type PartnerApplication = typeof partnerApplications.$inferSelect;
 export type NewPartnerApplication = typeof partnerApplications.$inferInsert;
 export type AdminUser = typeof adminUsers.$inferSelect;
+export type ContactRequest = typeof contactRequests.$inferSelect;

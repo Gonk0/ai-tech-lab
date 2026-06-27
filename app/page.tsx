@@ -177,71 +177,88 @@ function ProjectSection() {
   const { t } = useLanguage();
   const h = t.home;
 
+  const featured = [
+    {
+      name: "vodicak.pro",
+      url: "https://www.vodicak.pro",
+      logo: "/logos/vodicak-pro-transparent.png",
+      tags: ["EdTech", "SaaS", "Slovakia", "Production"],
+      description: h.vodicakDesc,
+      logoClass: "w-56 md:w-72",
+    },
+    {
+      name: "CamEngine",
+      url: "https://ghostprotocol-labs-sec.web.app/",
+      logo: "/logos/camengine.png",
+      tags: ["Windows", "Security", "IoT", "Desktop"],
+      description: h.camengineDesc,
+      logoClass: "w-48 md:w-56",
+    },
+  ] as const;
+
   return (
     <section className="px-6 py-28 md:px-12 lg:px-20">
       <div className="mx-auto max-w-7xl">
-        <SectionHeader index="01" title={h.flagship} href="/projects" linkLabel={h.allProjects} />
+        <SectionHeader index="01" title={h.liveProjects} href="/projects" linkLabel={h.allProjects} />
 
-        <motion.a
-          href="https://www.vodicak.pro"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.9, ease: easeOut }}
-          whileHover={{ y: -5 }}
-          className="group block cursor-pointer overflow-hidden rounded-3xl border border-white/[0.075] bg-white/[0.032] transition-all duration-500 hover:bg-white/[0.056]"
-        >
-          <div className="relative h-48 overflow-hidden bg-[#050512] md:h-60">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(37,99,235,0.5),transparent_54%),radial-gradient(ellipse_at_74%_20%,rgba(124,58,237,0.36),transparent_52%)]" />
-            <div className="absolute inset-0 flex items-center justify-center select-none">
-              <div className="relative w-56 opacity-95 drop-shadow-[0_0_46px_rgba(37,99,235,0.72)] md:w-72">
-                <Image
-                  src="/logos/vodicak-pro-transparent.png"
-                  alt="vodicak.pro logo"
-                  width={420}
-                  height={420}
-                  className="h-auto w-full object-contain"
-                  priority
-                />
+        <div className="grid gap-5 lg:grid-cols-2">
+          {featured.map((project, index) => (
+            <motion.a
+              key={project.name}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.9, delay: index * 0.06, ease: easeOut }}
+              whileHover={{ y: -5 }}
+              className="group block cursor-pointer overflow-hidden rounded-3xl border border-white/[0.075] bg-white/[0.032] transition-all duration-500 hover:bg-white/[0.056]"
+            >
+              <div className="relative h-44 overflow-hidden bg-[#050512] md:h-52">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(37,99,235,0.5),transparent_54%),radial-gradient(ellipse_at_74%_20%,rgba(124,58,237,0.36),transparent_52%)]" />
+                <div className="absolute inset-0 flex items-center justify-center select-none">
+                  <div className={`relative opacity-95 drop-shadow-[0_0_46px_rgba(37,99,235,0.72)] ${project.logoClass}`}>
+                    <Image
+                      src={project.logo}
+                      alt={`${project.name} logo`}
+                      width={420}
+                      height={420}
+                      className="h-auto w-full object-contain"
+                      priority={index === 0}
+                    />
+                  </div>
+                </div>
+                <div className="absolute right-5 top-5 flex items-center gap-2 border border-emerald-400/28 bg-emerald-400/[0.09] px-3 py-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 pulse-dot" />
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-emerald-300">{h.live}</span>
+                </div>
               </div>
-            </div>
-            <div className="absolute bottom-6 left-6 right-6 grid grid-cols-4 gap-2 opacity-45">
-              {[0, 1, 2, 3].map((item) => (
-                <div key={item} className="h-px bg-white/15" />
-              ))}
-            </div>
-            <div className="absolute right-5 top-5 flex items-center gap-2 border border-emerald-400/28 bg-emerald-400/[0.09] px-3 py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 pulse-dot" />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-emerald-300">{h.live}</span>
-            </div>
-          </div>
 
-          <div className="flex flex-col gap-8 p-7 md:flex-row md:items-end md:justify-between md:p-10">
-            <div>
-              <div className="mb-5 flex flex-wrap gap-2">
-                {["EdTech", "SaaS", "Slovakia", "Production"].map((tag) => (
-                  <span
-                    key={tag}
-                    className="border border-white/[0.09] px-3 py-1 text-[10px] uppercase tracking-wide text-white/36"
-                  >
-                    {tag}
-                  </span>
-                ))}
+              <div className="flex flex-col gap-6 p-7 md:p-8">
+                <div>
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="border border-white/[0.09] px-3 py-1 text-[10px] uppercase tracking-wide text-white/36"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className="mb-3 text-2xl font-bold tracking-[-0.03em] text-white md:text-4xl">
+                    {project.name}
+                  </h3>
+                  <p className="text-sm leading-[1.78] text-white/44 md:text-base">{project.description}</p>
+                </div>
+                <span className="inline-flex items-center gap-2 text-sm text-white transition-all duration-300 group-hover:gap-3">
+                  {h.visitProduct} <span className="text-xl">↗</span>
+                </span>
               </div>
-              <h3 className="mb-3 text-3xl font-bold tracking-[-0.03em] text-white md:text-5xl">
-                vodicak.pro
-              </h3>
-              <p className="max-w-2xl text-sm leading-[1.78] text-white/44 md:text-base">
-                {h.vodicakDesc}
-              </p>
-            </div>
-            <span className="inline-flex flex-shrink-0 items-center gap-2 text-sm text-white transition-all duration-300 group-hover:gap-3">
-              {h.visitProduct} <span className="text-xl">↗</span>
-            </span>
-          </div>
-        </motion.a>
+            </motion.a>
+          ))}
+        </div>
       </div>
     </section>
   );

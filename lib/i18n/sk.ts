@@ -32,10 +32,13 @@ export const sk = {
       "NEZISKOVÉ WEB PARTNERSTVÁ",
     ],
     flagship: "Vlajkový projekt",
+    liveProjects: "Live projekty",
     allProjects: "Všetky projekty",
     live: "Live",
     vodicakDesc:
       "Živá digitálna platforma pre autoškoly a budúcich vodičov. Online testy, vzdelávacie procesy a infraštruktúra pre modernú kategóriu výučby.",
+    camengineDesc:
+      "Bezplatný lokálny správca WiFi aj káblových IP kamier pre Windows. Live náhľad, rozpoznávanie tvárí, udalosti, SD záznamy a 40+ značiek — bez cloudu.",
     visitProduct: "Navštíviť produkt",
     capabilities: "Čo budujeme",
     cap1Title: "AI systémy",
@@ -105,6 +108,9 @@ export const sk = {
     vodicakTarget: "Autoškoly a budúci vodiči · Slovensko",
     vodicakDesc:
       "Živá EdTech platforma pre online testy, vzdelávacie procesy a digitálnu infraštruktúru slovenských autoškôl.",
+    camengineTarget: "Domácnosti a SMB · Windows · Slovensko",
+    camengineDesc:
+      "Bezplatná desktopová aplikácia pre správu IP kamier. RTSP live náhľad, tváre, udalosti, PDF reporty a SD záznamy — všetko lokálne na PC.",
     spaceTarget: "Konferenčné demá a interaktívny brand zážitok",
     spaceDesc:
       "3D vesmírny sandbox s planétami, hviezdami, gravitáciou, čiernymi dierami, orbitami, zbraňami a generatívnym zvukom.",

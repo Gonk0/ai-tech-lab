@@ -34,10 +34,13 @@ export const en: Dictionary = {
       "NONPROFIT WEB PARTNERSHIPS",
     ],
     flagship: "Flagship deployment",
+    liveProjects: "Live projects",
     allProjects: "All projects",
     live: "Live",
     vodicakDesc:
       "A live digital platform for driving schools and future drivers. Online tests, education workflows and product infrastructure for a modern learning category.",
+    camengineDesc:
+      "Free local manager for WiFi and wired IP cameras on Windows. Live view, face recognition, events, SD playback and 40+ brands — no cloud required.",
     visitProduct: "Visit product",
     capabilities: "What we build",
     cap1Title: "AI Systems",
@@ -107,6 +110,9 @@ export const en: Dictionary = {
     vodicakTarget: "Driving schools and future drivers · Slovakia",
     vodicakDesc:
       "A live EdTech platform for online tests, learning workflows and digital infrastructure for Slovak driving schools.",
+    camengineTarget: "Homes and SMBs · Windows · Slovakia",
+    camengineDesc:
+      "Free desktop app for IP camera management. RTSP live view, face recognition, events, PDF reports and SD playback — fully local on your PC.",
     spaceTarget: "Conference demos and interactive brand experience",
     spaceDesc:
       "A 3D-ish universe sandbox with planets, stars, gravity, black holes, orbital systems, weapons and generative ambient audio.",

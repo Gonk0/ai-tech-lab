@@ -48,6 +48,16 @@ export default function ProjectsPage() {
             logo: "/logos/vodicak-pro-transparent.png",
           },
           {
+            name: "CamEngine",
+            url: "https://ghostprotocol-labs-sec.web.app/",
+            status: p.statusLive,
+            statusKey: "statusLive",
+            target: p.camengineTarget,
+            description: p.camengineDesc,
+            tags: ["Windows", "Security", "IoT", "Desktop"],
+            logo: "/logos/camengine.png",
+          },
+          {
             name: "Space Lab",
             url: "/lab/space",
             status: p.statusLiveDemo,
